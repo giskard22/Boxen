@@ -1,4 +1,14 @@
 /**
+
+Fork of Phil Brown's Boxen jQuery Plugin, which appears to have been abandoned by the original author
+
+Modifications by Matt Rosenberg, who is not at all interested in copyright over the work:
+    - Remove dependence on the deprecated jQuery.browser object, which was used to alter behavior for Internet Explorer 6. Any IE6-specific code was also removed.
+
+@version 1.5
+
+**/
+/**
  * Boxen jQuery Plugin
  *
  * LICENSE
@@ -87,10 +97,6 @@
         },
         init: function(){
             _this = this;
-            this.isIE6 = $.browser.msie && parseInt($.browser.version) < 7;
-            if ($.browser.opera) {
-                 $.support.opacity = true;
-            }
             
             $('#boxen_overlay, #boxen_container').remove();
 
@@ -125,33 +131,13 @@
                     zIndex: 10001
                 });
             
-            if (this.isIE6) {
-                this.bigIFrame = $('<iframe>').attr('id', 'boxen_big_iframe')
-                    .css({
-                        zIndex: 9999,
-                        position: 'absolute',
-                        top: 0,
-                        left: 0,
-                        opacity: 0
-                    }).appendTo('body');
-                    
-                this._sizeOverlay();
-                this._centreContent();
-                $(window).bind('scroll.Boxen', function(e){
-                    _this._centreContent();
-                }).bind('resize.Boxen', function(e){
-                    _this._sizeOverlay();
-                    _this._centreContent();
-                });
-            } else {
-                this.overlay.css({
-                    position: 'fixed',
-                    width: '100%',
-                    height: '100%'
-                });
-                
-                this.container.css('position', 'fixed');
-            }
+            this.overlay.css({
+                position: 'fixed',
+                width: '100%',
+                height: '100%'
+            });
+            
+            this.container.css('position', 'fixed');
             
             this.overlay.appendTo('body');
             this.container.appendTo('body');
@@ -209,10 +195,6 @@
         },
         close: function(){
             try {
-                if (this.isIE6) {
-                    $(window).unbind('scroll.Boxen').unbind('resize.Boxen');
-                    throw 'IE6';
-                }
                 this.container.fadeOut('fast', function(){
                     $(this).remove();
                 });
