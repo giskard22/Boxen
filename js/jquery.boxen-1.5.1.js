@@ -4,8 +4,9 @@ Fork of Phil Brown's Boxen jQuery Plugin, which appears to have been abandoned b
 
 Modifications by Matt Rosenberg, who is not at all interested in copyright over the work:
     - Remove dependence on the deprecated jQuery.browser object, which was used to alter behavior for Internet Explorer 6. Any IE6-specific code was also removed.
+    - Fix call to jQuery.outerHeight() by adding an optional parameter. Seems to be a recurring bug with certain combinations of jQuery and jQuery UI that cause outerHeight() to return a jQuery instance instead of the desired integer when no parameters are sent.
 
-@version 1.5
+@version 1.5.1
 
 **/
 /**
@@ -239,7 +240,7 @@ Modifications by Matt Rosenberg, who is not at all interested in copyright over 
             return this.contentArea.get(0);
         },
         getContentAreaHeight: function() {
-            return this.titleBar ? this.options.height - this.titleBar.outerHeight() : this.options.height;
+            return this.titleBar ? this.options.height - this.titleBar.outerHeight(true) : this.options.height;
         },
         getContentAreaWidth: function() {
             return this.options.width;
